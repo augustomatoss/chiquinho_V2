@@ -250,7 +250,7 @@
   <!-- ros_control plugin -->
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-        <robotNamespace>chiquinho</robotNamespace>
+        <robotNamespace>chiquinho_v2</robotNamespace>
     </plugin>
   </gazebo>
 

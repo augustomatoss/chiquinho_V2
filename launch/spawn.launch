@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Carregas o URDF no ROS Parameter Server -->
+    <param name="robot_description" textfile="$(find chiquinho_v2)/urdf/chiquinho_v2.urdf"/>
+
+    <!-- Spawna o Robô -->
+    <node 
+        name="urdf_spawner" 
+        pkg="gazebo_ros" 
+        type="spawn_model"  
+        output="screen" 
+        respawn="false"
+        args="-urdf -model chiquinho_v2 -param robot_description">        
+    </node>
+
+    <!-- Carrega as configurações dos controladores para o parameter server -->
+    <rosparam command="load" file="$(find chiquinho_v2)/config/control.yaml"/>
+
+    <!-- Carrega os controladores -->
+<node 
+    name="controler_spawner" 
+    pkg="controller_manager" 
+    type="spawner"  
+    output="screen" 
+    respawn="false" 
+    ns="/chiquinho_v2" 
+    args="eixo_x eixo_y eixo_z">
+</node>
+<!-- Converte joint states para TF transforms -->
+<node name="robot_state_publisher" 
+    pkg="robot_state_publisher"
+    type="robot_state_publisher"
+    output="screen" 
+    respawn="false">
+    <remap from="/joint_states" to="chiquinho_v2/joint_states"/>
+</node>        
+
+</launch>
